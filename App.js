@@ -9,6 +9,7 @@ import AccountDetailScreen from "./src/screens/AccountDetailScreen";
 import TopUpScreen from "./src/screens/TopUpScreen";
 import AuthScreen from "./src/screens/AuthScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
+import AdminHomeScreen from "./src/screens/AdminHomeScreen";
 
 // import * as firebase from 'firebase';
 
@@ -54,6 +55,7 @@ const AuthNavigator = createStackNavigator(
 const MainNavigator = createSwitchNavigator({
   Auth: AuthNavigator,
   Stack: navigator,
+  AdminHome: AdminHomeScreen,
 });
 
 export default createAppContainer(MainNavigator);

@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import { createOpenLink } from "react-native-open-maps";
 
 const ParkingStatusScreen = () => {
-  const yosemite = { latitude: 37.865101, longitude: -119.53833 };
-  const openYosemite = createOpenLink(yosemite);
-  const openYosemiteZoomedOut = createOpenLink({ ...yosemite, zoom: 30 });
+  const location = { latitude: 37.865101, longitude: -119.53833 };
+  const openLocation = createOpenLink(location);
+  const openYosemiteZoomedOut = createOpenLink({ ...location, zoom: 30 });
 
   return (
     <View style={styles.container}>
@@ -13,7 +13,7 @@ const ParkingStatusScreen = () => {
       <Text style={styles.text}>Location: </Text>
       <Button
         style={styles.button}
-        onPress={openYosemite}
+        onPress={openLocation}
         title="Get Location"
       />
     </View>

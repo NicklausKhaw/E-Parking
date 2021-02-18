@@ -53,9 +53,6 @@ const AuthScreen = (props) => {
           />
         </View>
         <View style={styles.buttonContainer}>
-          <Button title="Login as Admin" onPress={() => {}} />
-        </View>
-        <View style={styles.buttonContainer}>
           <Button
             title="Switch to Sign Up"
             onPress={() => props.navigation.navigate("SignUp")}
@@ -69,6 +66,7 @@ const AuthScreen = (props) => {
 const onSubmitCheck = (email, password, props) => {
   console.log({ email, password });
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const adminEmailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@utar.my/;
 
   if (emailRegex.test(email) === false) {
     createErrorAlert();
@@ -78,7 +76,12 @@ const onSubmitCheck = (email, password, props) => {
     createErrorAlert();
     return;
   }
-  props.navigation.navigate("Stack");
+
+  if (adminEmailRegex.test(email) === true) {
+    props.navigation.navigate("AdminHome");
+  } else {
+    props.navigation.navigate("Stack");
+  }
 };
 
 const createErrorAlert = () =>

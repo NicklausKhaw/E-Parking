@@ -37,7 +37,9 @@ const SignUpScreen = (props) => {
           onInputChange={() => {}}
           initialValue=""
         /> */}
-        <Text style={styles.label}>Car Number Plate</Text>
+        <Text style={styles.label}>
+          Car Number Plate (Not required for admin account)
+        </Text>
         <TextInput
           style={styles.input}
           keyboardType="default"
@@ -59,6 +61,7 @@ const SignUpScreen = (props) => {
 const onSubmitCheck = (email, password, numberPlate, props) => {
   console.log({ email, password, numberPlate });
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const adminEmailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@utar.my/;
 
   if (emailRegex.test(email) === false) {
     createErrorAlert();
@@ -68,11 +71,16 @@ const onSubmitCheck = (email, password, numberPlate, props) => {
     createErrorAlert();
     return;
   }
-  if (numberPlate.length < 2) {
-    createErrorAlert();
-    return;
+
+  if (adminEmailRegex.test(email) === true) {
+    props.navigation.navigate("AdminHome");
+  } else {
+    if (numberPlate.length < 2) {
+      createErrorAlert();
+      return;
+    }
+    props.navigation.navigate("Stack");
   }
-  props.navigation.navigate("Stack");
 };
 
 const createErrorAlert = () =>
