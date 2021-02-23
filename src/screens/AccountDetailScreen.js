@@ -14,13 +14,13 @@ const AccountDetailScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    marginTop: 10,
     flex: 1,
-    padding: 10,
+    padding: 20,
     justifyContent: "flex-start",
   },
   text: {
-    padding: 5,
+    padding: 10,
     fontSize: 20,
   },
 });

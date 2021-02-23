@@ -1,12 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Button, Text, TextInput, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-
-//TODO - create functions to check if email, password is valid then only can proceed
+import * as firebase from "firebase";
+import apiKeys from "../../config/keys";
+import { signIn } from "../api/firebaseMethods";
 
 const AuthScreen = (props) => {
+  if (!firebase.apps.length) {
+    console.log("Connected with Firebase");
+    firebase.initializeApp(apiKeys.firebaseConfig);
+  }
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        props.navigation.navigate("Stack");
+      }
+    });
+  });
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const onSubmitCheck = () => {
+    console.log({ email, password });
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (emailRegex.test(email) === false) {
+      createErrorAlert();
+      return;
+    }
+    if (password.length < 8) {
+      createErrorAlert();
+      return;
+    }
+
+    signIn(email, password);
+  };
+
+  const createErrorAlert = () =>
+    Alert.alert(
+      "Invalid input",
+      "Please enter the correct E-mail and Password",
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      { cancelable: false }
+    );
 
   return (
     <LinearGradient colors={["lightblue", "#ffe3ff"]} style={styles.gradient}>
@@ -20,20 +58,6 @@ const AuthScreen = (props) => {
           autoCapitalize="none"
           onChangeText={(text) => setEmail(text)}
         />
-        {/* <Input
-          id="password"
-          label="Password"
-          keyboardType="default"
-          secureTextEntry
-          required
-          minLength={5}
-          autoCapitalize="none"
-          errorMessage="Please enter a valid password"
-          onInputChange={(text) => {
-            setPassword(password);
-          }}
-          initialValue=""
-        /> */}
         <Text style={styles.label}>Password</Text>
         <TextInput
           style={styles.input}
@@ -47,8 +71,7 @@ const AuthScreen = (props) => {
           <Button
             title="Login"
             onPress={() => {
-              //props.navigation.navigate("Stack");
-              onSubmitCheck(email, password, props);
+              onSubmitCheck(email, password);
             }}
           />
         </View>
@@ -62,35 +85,6 @@ const AuthScreen = (props) => {
     </LinearGradient>
   );
 };
-
-const onSubmitCheck = (email, password, props) => {
-  console.log({ email, password });
-  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  const adminEmailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@utar.my/;
-
-  if (emailRegex.test(email) === false) {
-    createErrorAlert();
-    return;
-  }
-  if (password.length < 8) {
-    createErrorAlert();
-    return;
-  }
-
-  if (adminEmailRegex.test(email) === true) {
-    props.navigation.navigate("AdminHome");
-  } else {
-    props.navigation.navigate("Stack");
-  }
-};
-
-const createErrorAlert = () =>
-  Alert.alert(
-    "Invalid input",
-    "Please enter the correct E-mail and Password",
-    [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-    { cancelable: false }
-  );
 
 AuthScreen.navigationOptions = {
   headerTitle: "Authenticate",

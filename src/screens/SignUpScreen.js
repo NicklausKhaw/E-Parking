@@ -1,15 +1,65 @@
 import React, { useState } from "react";
 import { TextInput, View, StyleSheet, Button, Text, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { registration } from "../api/firebaseMethods";
 
 const SignUpScreen = (props) => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [numberPlate, setNumberPlate] = useState("");
 
+  const emptyState = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setNumberPlate("");
+  };
+
+  const onSubmitCheck = (name, email, password, numberPlate) => {
+    console.log({ email, password, numberPlate });
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const adminEmailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@utar.my/;
+
+    if (name.length < 1) {
+      createErrorAlert();
+      return;
+    }
+
+    if (emailRegex.test(email) === false) {
+      createErrorAlert();
+      return;
+    }
+    if (password.length < 8) {
+      createErrorAlert();
+      return;
+    }
+
+    if (adminEmailRegex.test(email) === true) {
+      registration(email, password, name, numberPlate, "1");
+      emptyState();
+    } else {
+      if (numberPlate.length < 2) {
+        createErrorAlert();
+        return;
+      } else {
+        registration(email, password, name, numberPlate, "0");
+        emptyState();
+      }
+    }
+  };
+
   return (
     <LinearGradient colors={["lightblue", "#ffe3ff"]} style={styles.gradient}>
       <View style={styles.screen}>
+        <Text style={styles.label}>Name</Text>
+        <TextInput
+          style={styles.input}
+          keyboardType="default"
+          required
+          autoCapitalize="words"
+          onChangeText={(text) => setName(text)}
+        />
         <Text style={styles.label}>E-mail</Text>
         <TextInput
           style={styles.input}
@@ -27,18 +77,12 @@ const SignUpScreen = (props) => {
           autoCapitalize="none"
           onChangeText={(text) => setPassword(text)}
         />
-        {/* <Input
-          id="email"
-          label="Car Number Plate"
-          keyboardType="default"
-          required
-          autoCapitalize="none"
-          errorMessage="Please enter a valid car number plate"
-          onInputChange={() => {}}
-          initialValue=""
-        /> */}
         <Text style={styles.label}>
-          Car Number Plate (Not required for admin account)
+          Car Number Plate
+          <Text style={{ color: "red" }}>
+            {" "}
+            (Not required for admin account)
+          </Text>
         </Text>
         <TextInput
           style={styles.input}
@@ -50,7 +94,7 @@ const SignUpScreen = (props) => {
         <View style={styles.buttonContainer}>
           <Button
             title="Sign Up"
-            onPress={() => onSubmitCheck(email, password, numberPlate, props)}
+            onPress={() => onSubmitCheck(name, email, password, numberPlate)}
           />
         </View>
       </View>
@@ -58,35 +102,10 @@ const SignUpScreen = (props) => {
   );
 };
 
-const onSubmitCheck = (email, password, numberPlate, props) => {
-  console.log({ email, password, numberPlate });
-  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  const adminEmailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@utar.my/;
-
-  if (emailRegex.test(email) === false) {
-    createErrorAlert();
-    return;
-  }
-  if (password.length < 8) {
-    createErrorAlert();
-    return;
-  }
-
-  if (adminEmailRegex.test(email) === true) {
-    props.navigation.navigate("AdminHome");
-  } else {
-    if (numberPlate.length < 2) {
-      createErrorAlert();
-      return;
-    }
-    props.navigation.navigate("Stack");
-  }
-};
-
 const createErrorAlert = () =>
   Alert.alert(
     "Invalid input",
-    "Please enter the correct E-mail, Password and Car Number Plate",
+    "Please enter the correct Name, E-mail, Password and Car Number Plate",
     [{ text: "OK", onPress: () => console.log("OK Pressed") }],
     { cancelable: false }
   );
@@ -98,8 +117,6 @@ SignUpScreen.navigationOptions = {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    //justifyContent: "center",
-    //alignItems: "center",
     padding: 40,
   },
   gradient: {
