@@ -25,23 +25,13 @@ const HomeScreen = (props) => {
     getUserInfo();
   });
 
-  const logOutPress = () => {
-    loggingOut();
-    props.navigation.navigate("Auth");
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Welcome {name}</Text>
       <Button
         style={styles.buttons}
-        onPress={() => {}}
+        onPress={() => props.navigation.navigate("ViewCarPark")}
         title="View Car Parks"
-      />
-      <Button
-        style={styles.buttons}
-        onPress={() => logOutPress()}
-        title="Sign Out"
       />
     </View>
   );

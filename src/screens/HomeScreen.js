@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, LogBox } from "react-native";
 import * as firebase from "firebase";
 import { loggingOut } from "../api/firebaseMethods";
 
 //add admin buttons if isAdmin == 1
 
 const HomeScreen = (props) => {
+  LogBox.ignoreAllLogs();
   let currentUserUID = firebase.auth().currentUser.uid;
   const [name, setName] = useState("");
+  const [isAdmin, setIsAdmin] = useState("");
 
   useEffect(() => {
     async function getUserInfo() {
@@ -22,6 +24,7 @@ const HomeScreen = (props) => {
       } else {
         let dataObj = doc.data();
         setName(dataObj.name);
+        setIsAdmin(dataObj.isAdmin);
       }
     }
     getUserInfo();
@@ -32,11 +35,18 @@ const HomeScreen = (props) => {
     props.navigation.navigate("Auth");
   };
 
-  console.log(name);
+  console.log(name, isAdmin);
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Welcome {name}</Text>
+      {isAdmin == "1" ? (
+        <Button
+          style={styles.buttons}
+          onPress={() => props.navigation.navigate("AdminHome")}
+          title="Admin Home"
+        />
+      ) : null}
       <Button
         style={styles.buttons}
         onPress={() => props.navigation.navigate("ScanQR")}

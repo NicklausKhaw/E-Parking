@@ -10,7 +10,8 @@ import TopUpScreen from "./src/screens/TopUpScreen";
 import AuthScreen from "./src/screens/AuthScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import AdminHomeScreen from "./src/screens/AdminHomeScreen";
-import LoadingScreen from "./src/screens/LoadingScreen";
+import ViewCarParkScreen from "./src/screens/ViewCarParkScreen";
+import CarParkDetailScreen from "./src/screens/CarParkDetailScreen";
 
 const navigator = createStackNavigator(
   {
@@ -19,6 +20,9 @@ const navigator = createStackNavigator(
     ParkingStatus: ParkingStatusScreen,
     AccountDetail: AccountDetailScreen,
     TopUp: TopUpScreen,
+    AdminHome: AdminHomeScreen,
+    ViewCarPark: ViewCarParkScreen,
+    CarParkDetail: CarParkDetailScreen,
   },
   {
     initialRouteName: "Home",
@@ -41,7 +45,6 @@ const AuthNavigator = createStackNavigator(
 const MainNavigator = createSwitchNavigator({
   Auth: AuthNavigator,
   Stack: navigator,
-  AdminHome: AdminHomeScreen,
 });
 
 export default createAppContainer(MainNavigator);
