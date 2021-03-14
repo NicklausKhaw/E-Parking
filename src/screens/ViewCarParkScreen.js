@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import * as firebase from "firebase";
 import "firebase/firestore";
+import { LinearGradient } from "expo-linear-gradient";
 
 const ViewCarParkScreen = (props) => {
   const [loading, setLoading] = useState(true);
@@ -42,28 +43,30 @@ const ViewCarParkScreen = (props) => {
 
   console.log(carParks);
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Car Park List</Text>
-      <FlatList
-        keyExtractor={(item) => item.key}
-        data={carParks}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                props.navigation.navigate("CarParkDetail", {
-                  id: item.key,
-                  parkingRate: item.parkingRate,
-                });
-              }}
-            >
-              <Text style={styles.item}>{item.key}</Text>
-            </TouchableOpacity>
-          );
-        }}
-      />
-    </View>
+    <LinearGradient colors={["lightblue", "#ffe3ff"]} style={styles.gradient}>
+      <View style={styles.container}>
+        <Text style={styles.header}>Car Park List</Text>
+        <FlatList
+          keyExtractor={(item) => item.key}
+          data={carParks}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  props.navigation.navigate("CarParkDetail", {
+                    id: item.key,
+                    parkingRate: item.parkingRate,
+                  });
+                }}
+              >
+                <Text style={styles.item}>{item.key}</Text>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
+    </LinearGradient>
   );
 };
 
@@ -85,6 +88,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 100,
     paddingVertical: 20,
+    borderColor: "green",
+  },
+  gradient: {
+    width: "100%",
+    height: "100%",
   },
 });
 

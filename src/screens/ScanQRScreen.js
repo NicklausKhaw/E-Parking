@@ -29,9 +29,7 @@ export default function ScanQRScreen(props) {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
 
-    alert(
-      `Bar code with type ${type} and data ${data} has been scanned on ${currentDate}`
-    );
+    alert(`Entered ${data} on ${currentDate}`);
     props.navigation.pop();
   };
 

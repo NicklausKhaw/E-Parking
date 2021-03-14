@@ -19,6 +19,7 @@ export async function registration(
       name: name,
       numberPlate: numberPlate,
       isAdmin: isAdmin,
+      wallet: 0,
     });
   } catch (err) {
     Alert.alert("There is something wrong!!!!", err.message);

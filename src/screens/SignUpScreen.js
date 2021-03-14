@@ -117,7 +117,8 @@ SignUpScreen.navigationOptions = {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 40,
+    padding: 25,
+    justifyContent: "space-around",
   },
   gradient: {
     width: "100%",

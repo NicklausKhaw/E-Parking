@@ -12,6 +12,8 @@ import SignUpScreen from "./src/screens/SignUpScreen";
 import AdminHomeScreen from "./src/screens/AdminHomeScreen";
 import ViewCarParkScreen from "./src/screens/ViewCarParkScreen";
 import CarParkDetailScreen from "./src/screens/CarParkDetailScreen";
+import PaymentScreen from "./src/screens/PaymentScreen";
+import AddCarParkScreen from "./src/screens/AddCarParkScreen";
 
 const navigator = createStackNavigator(
   {
@@ -23,6 +25,8 @@ const navigator = createStackNavigator(
     AdminHome: AdminHomeScreen,
     ViewCarPark: ViewCarParkScreen,
     CarParkDetail: CarParkDetailScreen,
+    Payment: PaymentScreen,
+    AddCarPark: AddCarParkScreen,
   },
   {
     initialRouteName: "Home",
