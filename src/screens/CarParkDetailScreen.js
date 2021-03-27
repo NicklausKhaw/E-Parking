@@ -44,12 +44,51 @@ const CarParkDetailScreen = ({ navigation }) => {
         <Text style={styles.text}>Car Park : {id}</Text>
         {!edit ? (
           <View>
-            <Text style={styles.text}>Parking Rate (Per Hour): {rate}</Text>
-            <Button
-              title="Change Parking Rate"
-              color="#6200EE"
-              onPress={() => setEdit(true)}
-            />
+            <View>
+              <Text style={styles.text}>Parking Rate (Per Hour): {rate}</Text>
+              <Button
+                title="Change Parking Rate"
+                color="#6200EE"
+                onPress={() => setEdit(true)}
+              />
+            </View>
+            <View style={styles.deleteButton}>
+              <Button
+                title="Delete Car Park"
+                color="red"
+                onPress={() => {
+                  Alert.alert(
+                    "Are you sure you want to delete this carpark?",
+                    "Press OK to confirm delete",
+                    [
+                      {
+                        text: "OK",
+                        onPress: () => {
+                          deleteCarPark();
+                        },
+                      },
+                      {
+                        text: "Cancel",
+                        onPress: () => {
+                          return;
+                        },
+                      },
+                    ]
+                  );
+                }}
+              />
+            </View>
+            <View style={{ paddingTop: 10 }}>
+              <Button
+                title="View Currently Parked Cars"
+                color="#6200EE"
+                onPress={() => {
+                  navigation.navigate("ViewParkedCars", {
+                    id: id,
+                  });
+                }}
+              />
+            </View>
           </View>
         ) : (
           <View>
@@ -71,34 +110,15 @@ const CarParkDetailScreen = ({ navigation }) => {
                 updateParkingRate();
               }}
             />
+            <Button
+              title="Cancel"
+              color="red"
+              onPress={() => {
+                setEdit(false);
+              }}
+            />
           </View>
         )}
-        <View style={styles.deleteButton}>
-          <Button
-            title="Delete Car Park"
-            color="red"
-            onPress={() => {
-              Alert.alert(
-                "Are you sure you want to delete this carpark?",
-                "Press OK to confirm delete",
-                [
-                  {
-                    text: "OK",
-                    onPress: () => {
-                      deleteCarPark();
-                    },
-                  },
-                  {
-                    text: "Cancel",
-                    onPress: () => {
-                      return;
-                    },
-                  },
-                ]
-              );
-            }}
-          />
-        </View>
       </View>
     </LinearGradient>
   );

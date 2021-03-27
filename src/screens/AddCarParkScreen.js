@@ -6,8 +6,7 @@ import "firebase/firestore";
 
 const AddCarParkScreen = (props) => {
   const [id, setId] = useState("");
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
+  const [coordinates, setCoordinates] = useState("");
   const [rate, setRate] = useState(0);
 
   async function addCarPark() {
@@ -16,8 +15,7 @@ const AddCarParkScreen = (props) => {
       .collection("carparks")
       .doc(id)
       .set({
-        latitude: latitude,
-        longitude: longitude,
+        coordinates: coordinates,
         parkingRate: rate,
       })
       .then(() => {
@@ -27,16 +25,13 @@ const AddCarParkScreen = (props) => {
   }
 
   const onSubmitCheck = () => {
+    const coordinatesRegex = /^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/;
     if (id.length == 0) {
       Alert.alert("Invalid car park ID entered");
       return;
     }
-    if (isNaN(longitude)) {
-      Alert.alert("Invalid longitude entered");
-      return;
-    }
-    if (isNaN(latitude)) {
-      Alert.alert("Invalid latitude entered");
+    if (coordinatesRegex.test(coordinates) === false) {
+      Alert.alert("Invalid coordinates entered");
       return;
     }
     if (isNaN(rate)) {
@@ -57,19 +52,12 @@ const AddCarParkScreen = (props) => {
           keyboardType="default"
           onChangeText={(text) => setId(text)}
         />
-        <Text style={styles.text}>Longitude: </Text>
+        <Text style={styles.text}>Coordinates: </Text>
         <TextInput
           style={styles.input}
-          placeholder="1.223456"
-          keyboardType="decimal-pad"
-          onChangeText={(text) => setLongitude(parseFloat(text))}
-        />
-        <Text style={styles.text}>Latitude: </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="2.456464"
-          keyboardType="decimal-pad"
-          onChangeText={(text) => setLatitude(parseFloat(text))}
+          placeholder="1.223456, 3.4545455"
+          keyboardType="numbers-and-punctuation"
+          onChangeText={(text) => setCoordinates(text)}
         />
         <View style={styles.inputView}>
           <Text style={styles.rateText}>Parking Rate (Per Hour): RM</Text>

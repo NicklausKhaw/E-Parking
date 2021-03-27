@@ -13,8 +13,6 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { loggingOut } from "../api/firebaseMethods";
 
-//add admin buttons if isAdmin == 1
-
 const HomeScreen = (props) => {
   LogBox.ignoreAllLogs();
   let currentUserUID = firebase.auth().currentUser.uid;
@@ -69,7 +67,24 @@ const HomeScreen = (props) => {
       );
     }
     if (wallet >= 10 && hasNumberPlate) {
-      props.navigation.navigate("ScanQR");
+      props.navigation.navigate("ScanQR", {
+        numberPlate: numberPlate,
+        wallet: wallet,
+        id: currentUserUID,
+      });
+    }
+  };
+
+  const checkNumberPlate = () => {
+    if (!hasNumberPlate) {
+      Alert.alert(
+        "No Number Plate",
+        "Register your Car Number Plate to continue"
+      );
+    } else {
+      props.navigation.navigate("ParkingStatus", {
+        numberPlate: numberPlate,
+      });
     }
   };
 
@@ -94,7 +109,7 @@ const HomeScreen = (props) => {
         />
         <Button
           style={styles.buttons}
-          onPress={() => props.navigation.navigate("ParkingStatus")}
+          onPress={() => checkNumberPlate()}
           title="Check Parking Status"
         />
         <Button

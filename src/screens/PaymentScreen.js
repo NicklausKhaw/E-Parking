@@ -31,7 +31,7 @@ const PaymentScreen = ({ navigation }) => {
     const nameRegex = /^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$/;
     const numberRegex = /^[0-9]+$/;
 
-    if (numberRegex.test(cardNumber) === false) {
+    if (numberRegex.test(cardNumber) === false || cardNumber.length < 12) {
       createAlert("Invalid credit card number entered");
       return;
     }
@@ -120,7 +120,6 @@ const PaymentScreen = ({ navigation }) => {
           color="#6200EE"
           onPress={() => {
             onSubmitCheck();
-            setWallet(parseFloat(wallet) + parseFloat(amount));
           }}
         />
       </View>
